@@ -19,13 +19,12 @@ app.use(bodyParser.urlencoded());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //routing 
-router.get('/', (req, res) => res.send('hello routing'))
 router.get('/get', (req, res) => {
     Post.find({})
     .then(data => res.json(data))
     .catch(error => {})
 })
-router.get('/getId', (req, res) => {
+router.get('/getid', (req, res) => {
     Post.findOne({id: req.query.id})
     .then(data => res.json(data))
     .catch(error => {})
@@ -35,14 +34,15 @@ router.post('/create', (req, res) => {
     const title = req.body.title;
 
     try {
+        if(!images) return res.send('Error')
       Post.create({ images, title });
     } catch (error) {
       return res.status(500).send('Error');
     }
-    return res.status(201).send('Created');
+    return res.status(201).send('Created ');
 })
 router.post('/delete', (req, res) => {
-    Post.deleteOne({id: req.body.id}).then(() => res.status(200).send('Delete')).catch(error => res.status(500))
+    Post.deleteOne({id: req.body.id}).then(() => res.status(200).send('deleted')).catch(error => res.status(500).send('Error'))
 })
 
 
