@@ -22,12 +22,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 router.get('/get', (req, res) => {
     Post.find({})
     .then(data => res.json(data))
-    .catch(error => {})
+    .catch(error => res.status(500).send('Error'))
 })
 router.get('/getid', (req, res) => {
     Post.findOne({id: req.query.id})
     .then(data => res.json(data))
-    .catch(error => {})
+    .catch(error => res.status(500).send('Error'))
 })
 router.post('/create', (req, res) => {
     const images = req.body.images;
