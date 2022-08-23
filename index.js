@@ -55,4 +55,4 @@ const connect = async () => {
 app.use('/', router)
 
 connect()
-app.listen(3000, () => console.log('app is running'))
+app.listen(process.env.PORT || 5000, () => console.log('app is running'))
