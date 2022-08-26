@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const router = express.Router()
 var cors = require('cors')
 const Post = require("./model/Post");
+const Acc = require("./model/Acc")
 
 const corsOptions = {
     origin: "*",
@@ -24,11 +25,15 @@ router.get('/get', (req, res) => {
     .then(data => res.json(data))
     .catch(error => res.status(500).send('Error'))
 })
+
 router.get('/getid', (req, res) => {
     Post.findOne({id: req.query.id})
-    .then(data => res.json(data))
+    .then(data => {
+       return res.json(data)
+    })
     .catch(error => res.status(500).send('Error'))
 })
+
 router.post('/create', (req, res) => {
     const images = req.body.images;
     const title = req.body.title;
@@ -41,8 +46,43 @@ router.post('/create', (req, res) => {
     }
     return res.status(201).send('Created ');
 })
+
 router.post('/delete', (req, res) => {
     Post.deleteOne({id: req.body.id}).then(() => res.status(200).send('deleted')).catch(error => res.status(500).send('Error'))
+})
+
+router.get('/get-acc', (req, res) => {
+    Acc.find({})
+    .then(data => res.json(data))
+    .catch(error => res.status(500).send('Error'))
+})
+
+router.get('/get-acc-id', (req, res) => {
+    Acc.findOne({idAcc: req.query.id})
+    .then(data => {
+       return res.json(data)
+    })
+    .catch(error => res.status(500).send('Error'))
+})
+
+router.post('/create-acc', (req, res) => {
+    const images = req.body.images;
+    const desc = req.body.desc;
+    const thumb = req.body.thumb;
+    const price = req.body.price;
+    
+    const finalImages = images.split(',')
+    try {
+        if(!images || !thumb) return res.send('Error')
+      Acc.create({ images:finalImages, desc, thumb, price });
+    } catch (error) {
+      return res.status(500).send('Error');
+    }
+    return res.status(201).send('Created ');
+})
+
+router.post('/delete-acc', (req, res) => {
+    Acc.deleteOne({idAcc: req.body.id}).then(() => res.status(200).send('deleted')).catch(error => res.status(500).send('Error'))
 })
 
 
@@ -55,4 +95,4 @@ const connect = async () => {
 app.use('/', router)
 
 connect()
-app.listen(process.env.PORT || 5000, () => console.log('app is running'))
+app.listen(process.env.PORT || 5000, () => console.log('app is running, port:', process.env.PORT || 5000))

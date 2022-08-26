@@ -5,7 +5,7 @@ const AutoIncrement = require('mongoose-sequence')(mongoose);
 const Post = new Schema({
     title: String,
     images: {type: "String", required: true},
-    id: Number,
+    id: Number
 })
 
 Post.plugin(AutoIncrement, {inc_field: 'id'});
