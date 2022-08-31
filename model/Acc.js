@@ -7,7 +7,7 @@ const Acc = new Schema({
     thumb: {type: String, required: true},
     desc: String,
     idAcc: Number,
-    price: Number
+    price: String
 })
 
 Acc.plugin(AutoIncrement, {inc_field: 'idAcc'});
